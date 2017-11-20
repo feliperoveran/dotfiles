@@ -32,6 +32,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-obsession'
 Plug 'posva/vim-vue'
 Plug 'elixir-editors/vim-elixir'
+Plug 'fatih/vim-go'
 
 if filereadable(expand("~/.plugins.vim.local"))
   source ~/.plugins.vim.local
