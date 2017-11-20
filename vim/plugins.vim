@@ -31,7 +31,7 @@ Plug 'tpope/vim-repeat'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-obsession'
 Plug 'posva/vim-vue'
-Plug 'hruvasagar/vim-prosession'
+Plug 'elixir-editors/vim-elixir'
 
 if filereadable(expand("~/.plugins.vim.local"))
   source ~/.plugins.vim.local
