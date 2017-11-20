@@ -20,8 +20,7 @@ parse_git_branch() {
 }
 #export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
 
-export
-PS1="${debian_chroot:+($debian_chroot)}\u@\h\[\033[00m\]:\[\033[32m\]\w\[\033[36m\]\$(parse_git_branch)\[\033[00m\]$ "
+export PS1="${debian_chroot:+($debian_chroot)}\u@\h\[\033[00m\]:\[\033[32m\]\w\[\033[36m\]\$(parse_git_branch)\[\033[00m\]$ "
 
 # vagrant aliases
 alias vagemkt='cd /home/feliperoveran/locaweb/emkt/emkt-vagrant/ && vagrant up && vagrant ssh'
