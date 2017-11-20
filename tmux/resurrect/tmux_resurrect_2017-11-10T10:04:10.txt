@@ -1,7 +1,0 @@
-pane	0	1	:emkt-core	0	:-	1	:/home/feliperoveran/locaweb/emkt/emkt-core	1	bash	:/bin/bash
-pane	0	2	:emkt-api	1	:*Z	1	:/home/feliperoveran/locaweb/emkt/emkt-api	0	vim	:/bin/bash
-pane	0	2	:emkt-api	1	:*Z	2	:/home/feliperoveran/locaweb/emkt/emkt-vagrant	0	ssh	:/bin/bash
-pane	0	2	:emkt-api	1	:*Z	3	:/home/feliperoveran/locaweb/emkt/emkt-api	1	tailf	:/bin/bash
-window	0	1	0	:-	b2bd,190x51,0,0,0
-window	0	2	1	:*Z	8405,190x51,0,0[190x25,0,0,2,190x25,0,26{94x25,0,26,1,95x25,95,26,3}]
-state	0	
