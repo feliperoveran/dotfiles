@@ -59,5 +59,5 @@ def run_command(cmd)
 end
 
 def install_prereqs
-  run_command %{ $HOME/.cc_dotfiles/ubuntu.sh }
+  run_command %{ ./ubuntu.sh }
 end
