@@ -11,3 +11,4 @@ sudo apt-get install dconf-cli
 sudo apt-get install vim-gnome
 git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git
 ./gnome-terminal-colors-solarized/install.sh
+git clone https://github.com/tmux-plugins/tpm ./tmux/plugins/tpm
