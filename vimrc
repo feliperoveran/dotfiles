@@ -160,7 +160,7 @@ if filereadable(expand("./script/" . script_name))
 elseif filereadable(expand("./scripts/" . script_name))
   let g:rspec_command = "VtrSendCommandToRunner! " . "./scripts/" . script_name . " rspec {spec}"
 else
-  let g:rspec_command = "VtrSendCommandToRunner! bundle exec rspec {rspec}"
+  let g:rspec_command = "VtrSendCommandToRunner! bundle exec rspec {spec}"
 endif
 
 " Local config
