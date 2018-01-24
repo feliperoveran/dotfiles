@@ -151,12 +151,16 @@ syntax enable
 set background=dark
 colorscheme solarized
 
-if filereadable(expand("./scripts/freddie"))
-  let g:rspec_command = "VtrSendCommandToRunner! ./scripts/freddie rspec {spec}"
-elseif filereadable(expand("./bin/rspec"))
-  let g:rspec_command = "VtrSendCommandToRunner! ./bin/rspec {spec}"
+" This gets the current directory name, not the fullpath, needed to see if the
+" ./script/<dirname> exists so it can be called when running specs
+let script_name = split(getcwd(), "/")[-1]
+
+if filereadable(expand("./script/" . script_name))
+  let g:rspec_command = "VtrSendCommandToRunner! " . "./script/" . script_name . " rspec {spec}"
+elseif filereadable(expand("./scripts/" . script_name))
+  let g:rspec_command = "VtrSendCommandToRunner! " . "./scripts/" . script_name . " rspec {spec}"
 else
-  let g:rspec_command = "VtrSendCommandToRunner! rspec {spec}"
+  let g:rspec_command = "VtrSendCommandToRunner! bundle exec rspec {rspec}"
 endif
 
 " Local config
