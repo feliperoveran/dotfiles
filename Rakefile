@@ -11,6 +11,8 @@ task :install do
     "git/*",
   ]))
 
+  install_binaries(Dir.glob 'bin/*')
+
   install_prereqs
 
   install_fonts
@@ -42,6 +44,15 @@ def install_files(files)
     end
 
     run_command %{ ln -nfs "#{source}" "#{file}" }
+  end
+end
+
+def install_binaries(files)
+  files.each do |f|
+    source = "#{ENV['PWD']}/#{f}"
+    destination = "/usr/local/bin/#{f.split('/').last}"
+
+    run_command "sudo ln -nfs #{source} #{destination}"
   end
 end
 
