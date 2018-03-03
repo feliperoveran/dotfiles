@@ -124,6 +124,3 @@
   enabled = true
 [include]
   path = ~/.gitconfig.local
-[user]
-	name = Felipe Roveran
-	email = feliperoveran@hotmail.com
