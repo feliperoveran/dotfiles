@@ -1,0 +1,4 @@
+# MOVE ME TO ~/gitconfig.local
+[user]
+  name = User name
+  email = email@user.com

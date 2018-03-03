@@ -1,0 +1,18 @@
+# MOVE ME TO ~/.ssh/config
+# Bitbucket
+Host bitbucket.org
+HostName bitbucket.org
+User feliperoveran
+IdentityFile ~/.ssh/id_rsa_bb
+
+# Gitlab
+Host code.locaweb.com.br
+HostName code.locaweb.com.br
+User felipe.roveran
+IdentityFile ~/.ssh/id_rsa_gitlab
+
+# Github
+Host github.com
+Hostname github.com
+User feliperoveran
+IdentityFile ~/.ssh/id_rsa_github
