@@ -13,7 +13,6 @@ Plug 'pbrisbin/vim-mkdir' " create folder if it doesn't exist
 Plug 'scrooloose/syntastic' " syntax checking
 Plug 'thoughtbot/vim-rspec'
 Plug 'tpope/vim-endwise'
-"Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-rails'
 Plug 'keith/rspec.vim'
@@ -34,6 +33,7 @@ Plug 'posva/vim-vue'
 Plug 'elixir-editors/vim-elixir'
 Plug 'fatih/vim-go'
 Plug 'vim-scripts/tabmerge'
+Plug 'jparise/vim-graphql'
 
 if filereadable(expand("~/.plugins.vim.local"))
   source ~/.plugins.vim.local
