@@ -14,7 +14,8 @@ install_libraries() {
     dconf-cli \
     vim-gnome \
     docker-ce \
-    spotify-client
+    spotify-client \
+    htop
 }
 
 add_docker_key() {
