@@ -56,8 +56,19 @@ nnoremap <S-Tab> gt
 nnoremap <silent> <S-t> :tabnew<CR>
 
 " Rubocop
-map <Leader>ru :call VtrSendCommand('rubocop')<CR>
-map <Leader>rfu :call VtrSendCommand('rubocop ' . expand("%"))<CR>
+" This gets the current directory name, not the fullpath, needed to see if the
+" ./script/<dirname> exists so it can be called when running specs
+let script_name = split(getcwd(), "/")[-1]
+
+if filereadable(expand("./script/" . script_name))
+  let rubocop_command = "./script/" . script_name . " rubocop"
+elseif filereadable(expand("./scripts/" . script_name))
+  let rubocop_command = "./scripts/" . script_name . " rubocop"
+else
+  let rubocop_command = "bundle exec rubocop"
+endif
+
+map <Leader>rb :call VtrSendCommand(rubocop_command)<CR>
 
 " Flog
 map <Leader>fl :call VtrSendCommand('flog ' . expand("%"))<CR>
