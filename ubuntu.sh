@@ -15,7 +15,11 @@ install_libraries() {
     vim-gnome \
     docker-ce \
     spotify-client \
-    htop
+    htop \
+    # Libraries for Vim Markdown Preview
+    python3-pip \
+    xdotool \
+    pip3 install grip --user
 }
 
 add_docker_key() {

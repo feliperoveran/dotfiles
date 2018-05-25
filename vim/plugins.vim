@@ -35,6 +35,7 @@ Plug 'fatih/vim-go'
 Plug 'vim-scripts/tabmerge'
 Plug 'jparise/vim-graphql'
 Plug 'python-mode/python-mode'
+Plug 'JamshedVesuna/vim-markdown-preview'
 
 if filereadable(expand("~/.plugins.vim.local"))
   source ~/.plugins.vim.local
