@@ -47,3 +47,8 @@ vim-markdown-preview.html
 
 # Ruby
 .byebug_history
+
+# Python
+__pycache__
+*.pyc
+.ropeproject
