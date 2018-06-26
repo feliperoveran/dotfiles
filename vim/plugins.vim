@@ -36,6 +36,7 @@ Plug 'vim-scripts/tabmerge'
 Plug 'jparise/vim-graphql'
 Plug 'python-mode/python-mode'
 Plug 'JamshedVesuna/vim-markdown-preview'
+Plug 'hashivim/vim-terraform'
 
 if filereadable(expand("~/.plugins.vim.local"))
   source ~/.plugins.vim.local
