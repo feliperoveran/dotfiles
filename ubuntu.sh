@@ -19,6 +19,7 @@ install_libraries() {
     # Libraries for Vim Markdown Preview
     python3-pip \
     xdotool \
+    xclip \
     pip3 install grip --user
 }
 
