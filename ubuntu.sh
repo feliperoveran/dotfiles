@@ -20,6 +20,7 @@ install_libraries() {
     python3-pip \
     xdotool \
     xclip \
+    exuberant-ctags \
     pip3 install grip --user
 }
 
