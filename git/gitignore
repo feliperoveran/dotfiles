@@ -52,3 +52,4 @@ vim-markdown-preview.html
 __pycache__
 *.pyc
 .ropeproject
+.pytest_cache/
