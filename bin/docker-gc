@@ -4,5 +4,5 @@ GARBAGE="/var/lib/docker/aufs/diff"
 du -hd 1 $GARBAGE | sort -hrk 1 | head -25
 find $GARBAGE -maxdepth 1 -name *-removing -exec rm -rf '{}' \;
 
-#docker ps -aqf status=exited | xargs docker rm
-#docker images -qf dangling=true | xargs docker rmi
+docker ps -aqf status=exited | xargs docker rm
+docker images -qf dangling=true | xargs docker rmi
