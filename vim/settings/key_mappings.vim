@@ -70,6 +70,18 @@ endif
 
 map <Leader>rb :call VtrSendCommand(rubocop_command)<CR>
 
+" Python tests
+if filereadable(expand("./script/" . script_name))
+  let pytest_command = "./script/" . script_name . " tests "
+elseif filereadable(expand("./scripts/" . script_name))
+  let pytest_command = "./scripts/" . script_name . " tests "
+else
+  let pytest_command = "pytest "
+endif
+
+map <Leader>rp :call VtrSendCommand(pytest_command . expand("%"))<CR>
+map <Leader>rpa :call VtrSendCommand(pytest_command)<CR>
+
 " Flog
 map <Leader>fl :call VtrSendCommand('flog ' . expand("%"))<CR>
 
@@ -105,4 +117,3 @@ map <Leader>ct :!ctags -R .<CR>
 
 "grep the current word using K (mnemonic Kurrent)
 nnoremap <silent> K :Ag <cword><CR>
-
