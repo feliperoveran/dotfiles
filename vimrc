@@ -170,12 +170,10 @@ endif
 
 let g:ctrlp_show_hidden=1
 
-" enable python3 mode for python-mode plugin
-" let g:pymode_python = 'python3'
-"
-
 " Vim markdown preview options
 " https://github.com/JamshedVesuna/vim-markdown-preview
 let vim_markdown_preview_github=1
 let vim_markdown_preview_hotkey='<C-o>'
 let vim_markdown_preview_toggle=1
+
+let g:pymode_python = 'python3'
