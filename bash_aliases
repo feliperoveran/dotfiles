@@ -13,6 +13,7 @@ alias gm="git merge"
 alias gp="git pull origin"
 alias gpo="git push origin"
 alias gs="git status"
+alias gds="git diff --staged"
 
 # show branch name on PS1
 parse_git_branch() {
