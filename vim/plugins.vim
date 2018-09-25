@@ -34,7 +34,7 @@ Plug 'elixir-editors/vim-elixir'
 Plug 'fatih/vim-go'
 Plug 'vim-scripts/tabmerge'
 Plug 'jparise/vim-graphql'
-Plug 'python-mode/python-mode'
+Plug 'python-mode/python-mode', { 'branch': 'develop' }
 Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'hashivim/vim-terraform'
 
