@@ -1,6 +1,9 @@
 # Source git completion functions
 source /usr/share/bash-completion/completions/git
 
+# Remap keys
+xmodmap -e "keycode 47 = colon semicolon"
+
 # git aliases
 alias g="git"
 alias ga="git add"
