@@ -1,6 +1,6 @@
 vim/bundle/
-.DS_Store
 vim/backups
 tmux/resurrect/*
-tmux/plugins/*
+tmux/plugins/
 gnome-terminal-colors-solarized
+dircolors
