@@ -1,3 +1,6 @@
+# enable vi keys for bash
+set -o vi
+
 # Source git completion functions
 source /usr/share/bash-completion/completions/git
 
@@ -13,11 +16,13 @@ alias gco="git checkout"
 alias gcom="git checkout master"
 alias gd="git diff"
 alias gl="git log"
+alias gle="git log --pretty=full"
 alias gm="git merge"
 alias gp="git pull origin"
 alias gpo="git push origin"
 alias gs="git status"
 alias gds="git diff --staged"
+alias grv="git review -R"
 
 # Enable autocompletion for git aliases
 __git_complete gb _git_branch
