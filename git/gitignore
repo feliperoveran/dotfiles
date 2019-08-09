@@ -53,3 +53,6 @@ __pycache__
 *.pyc
 .ropeproject
 .pytest_cache/
+
+# Linux
+.bash_history

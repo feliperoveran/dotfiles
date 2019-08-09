@@ -7,7 +7,7 @@ call plug#begin('~/.vim/bundle')
 " Define bundles via Github repos
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'skwp/vim-colors-solarized'
-Plug 'scrooloose/nerdtree' " file explorer
+Plug 'feliperoveran/nerdtree', { 'branch': 'master' } " file explorer
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy finder
 Plug 'pbrisbin/vim-mkdir' " create folder if it doesn't exist
 Plug 'scrooloose/syntastic' " syntax checking
@@ -37,6 +37,9 @@ Plug 'jparise/vim-graphql'
 Plug 'python-mode/python-mode', { 'branch': 'develop' }
 Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'hashivim/vim-terraform'
+Plug 'seeamkhan/robotframework-vim'
+Plug 'tfnico/vim-gradle'
+Plug 'davisdude/vim-love-docs'
 
 if filereadable(expand("~/.plugins.vim.local"))
   source ~/.plugins.vim.local
