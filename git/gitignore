@@ -40,6 +40,7 @@ Session.vim
 .netrwhist
 *~
 vim-markdown-preview.html
+vim/autoload
 
 # SASS
 # ----------------------------------------------------------------------------------------------
@@ -53,3 +54,6 @@ __pycache__
 *.pyc
 .ropeproject
 .pytest_cache/
+
+# Linux
+.bash_history
