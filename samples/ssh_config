@@ -1,18 +1,29 @@
-# MOVE ME TO ~/.ssh/config
-# Bitbucket
+################################
+### MOVE ME TO ~/.ssh/config ###
+################################
+
+# Include multiple config files
+Include config.d/*
+
+# Git 1
 Host bitbucket.org
 HostName bitbucket.org
-User feliperoveran
+User my-user
 IdentityFile ~/.ssh/id_rsa_bb
 
-# Gitlab
-Host code.locaweb.com.br
-HostName code.locaweb.com.br
-User felipe.roveran
-IdentityFile ~/.ssh/id_rsa_gitlab
-
-# Github
+# Git 2
 Host github.com
 Hostname github.com
-User feliperoveran
+User my-user
 IdentityFile ~/.ssh/id_rsa_github
+
+# Match a host pattern, proxy jump and run tmux on connect
+Match Host 10.6.* exec "test $_ = /usr/bin/ssh"
+    User root
+    PreferredAuthentications publickey
+    StrictHostKeyChecking no
+    IdentityFile ~/.ssh/nice.pem
+    RequestTTY Force
+    ProxyJump root@my-bastion.com
+    AddKeysToAgent true
+    RemoteCommand bash -c "tmux attach || tmux || true"
