@@ -1,0 +1,38 @@
+#!/bin/bash
+
+RESTORE='\033[0m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+
+BASE_PATH=${1:-$(pwd)}
+# TODO: support receiving git options
+
+echo -e "${YELLOW}Looking for git repos in ${BASE_PATH}${RESTORE}"
+
+pushd ${BASE_PATH} >/dev/null
+
+for repo in $(ls -d */); do
+  repo_path="${BASE_PATH}/${repo}"
+
+  pushd $repo_path >/dev/null
+
+  echo -e "${BLUE}Trying to update ${repo_path}${RESTORE}"
+
+  if [ ! -d .git ]; then
+    echo -e "${RED}${repo_path} is not a git repository${RESTORE}"
+
+    popd >/dev/null
+
+    continue
+  fi
+
+  git pull origin --rebase || true
+
+  echo -e "${GREEN}Updated ${repo_path}${RESTORE}"
+
+  popd >/dev/null
+done
+
+echo -e "${GREEN}Done!${RESTORE}"
