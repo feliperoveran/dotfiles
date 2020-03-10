@@ -1,8 +1,7 @@
 #!/bin/bash
 
 install_libraries() {
-  sudo apt-get install -y python-software-properties \
-    software-properties-common \
+  sudo apt-get update && sudo apt-get install -y software-properties-common \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -13,49 +12,39 @@ install_libraries() {
     tmux \
     dconf-cli \
     vim-gnome \
-    docker-ce \
-    spotify-client \
     htop \
-    # Libraries for Vim Markdown Preview
     python3-pip \
     xdotool \
     xclip \
-    exuberant-ctags \
-    pip3 install grip --user
+    exuberant-ctags
 }
 
-add_docker_key() {
+install_docker(){
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-}
 
-add_docker_repository() {
   sudo add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
     $(lsb_release -cs) \
     stable"
-}
 
-fix_docker_permissions() {
+  sudo apt-get update && sudo apt-get install -y docker-ce
+
   sudo groupadd docker
 
   sudo usermod -aG docker $USER
+
+  # activate the changes to the docker group
+  newgrp docker
 }
 
-add_rvm_key_and_repo() {
-  gpg --keyserver hkp://keys.gnupg.net --recv-keys \
-    409B6B1796C275462A1703113804BB82D39DC0E3
-
-  curl -sSL https://get.rvm.io | bash -s stable
-
-  sudo add-apt-repository -y ppa:pi-rho/dev
-}
-
-add_spotify_key_and_repo() {
+install_spotify() {
   sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys \
     0DF731E45CE24F27EEEB1450EFDC8610341D9410
 
   echo deb http://repository.spotify.com stable non-free |
     sudo tee /etc/apt/sources.list.d/spotify.list
+
+  sudo apt-get update && sudo apt-get install spotify-client
 }
 
 install_solarized_theme() {
@@ -72,12 +61,9 @@ install_fzf() {
   ~/.fzf/install
 }
 
-add_rvm_key_and_repo
-add_spotify_key_and_repo
-add_docker_key
-add_docker_repository
-sudo apt-get update
 install_libraries
+# install_spotify
+install_docker
 install_solarized_theme
 install_fzf
-fix_docker_permissions
+# pip3 install grip --user
