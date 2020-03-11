@@ -1,5 +1,6 @@
 vim/bundle/
 vim/backups
+vim/swap
 tmux/resurrect/*
 tmux/plugins/
 gnome-terminal-colors-solarized

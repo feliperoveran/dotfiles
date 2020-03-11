@@ -2,9 +2,6 @@
 let mapleader = " "
 
 set backspace=2   " Backspace deletes like most programs in insert mode
-set nobackup
-set nowritebackup
-set noswapfile    " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
 set history=1000  " a lot of history
 set ruler         " show the cursor position all the time
 set hlsearch
@@ -140,6 +137,9 @@ if has('persistent_undo')
   set undofile
 endif
 
+" ================ Organize swap files ================
+silent !mkdir $HOME/.dotfiles/vim/swap > /dev/null 2>&1
+set directory^=$HOME/.dotfiles/vim/swap//
 
 " Uncomment to automatically attach VIM to a runner TMUX pane
 " let is_tmux = $TMUX
