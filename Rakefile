@@ -11,7 +11,8 @@ task :install do
     "git/*",
   ]))
 
-  install_binaries(Dir.glob 'bin/*')
+  # symlink ./bin files to /usr/local/bin
+  install_binaries(Dir.glob('bin/*'), '/usr/local/bin')
 
   install_prereqs
 
@@ -47,12 +48,12 @@ def install_files(files)
   end
 end
 
-def install_binaries(files)
+def install_binaries(files, destination)
   files.each do |f|
     source = "#{ENV['PWD']}/#{f}"
-    destination = "/usr/local/bin/#{f.split('/').last}"
+    target = "#{destination}/#{f.split('/').last}"
 
-    run_command "sudo ln -nfs #{source} #{destination}"
+    run_command "sudo ln -nfs #{source} #{target}"
   end
 end
 
