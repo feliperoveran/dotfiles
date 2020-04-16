@@ -37,6 +37,7 @@ Plug 'jparise/vim-graphql'
 Plug 'python-mode/python-mode', { 'branch': 'develop' }
 Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'hashivim/vim-terraform'
+Plug 'gioele/vim-autoswap'
 
 if filereadable(expand("~/.plugins.vim.local"))
   source ~/.plugins.vim.local

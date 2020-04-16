@@ -1,8 +1,7 @@
 #!/bin/bash
 
 install_libraries() {
-  sudo apt-get install -y python-software-properties \
-    software-properties-common \
+  sudo apt-get update && sudo apt-get install -y software-properties-common \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -12,50 +11,62 @@ install_libraries() {
     silversearcher-ag \
     tmux \
     dconf-cli \
-    vim-gnome \
-    docker-ce \
-    spotify-client \
+    vim-gtk3 \
     htop \
-    # Libraries for Vim Markdown Preview
     python3-pip \
     xdotool \
     xclip \
     exuberant-ctags \
-    pip3 install grip --user
+    meld \
+    pwgen \
+    jq
 }
 
-add_docker_key() {
+install_docker(){
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-}
 
-add_docker_repository() {
   sudo add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
     $(lsb_release -cs) \
     stable"
-}
 
-fix_docker_permissions() {
+  sudo apt-get update && sudo apt-get install -y docker-ce
+
   sudo groupadd docker
 
   sudo usermod -aG docker $USER
+
+  # activate the changes to the docker group
+  newgrp docker
 }
 
-add_rvm_key_and_repo() {
-  gpg --keyserver hkp://keys.gnupg.net --recv-keys \
-    409B6B1796C275462A1703113804BB82D39DC0E3
+install_kubectl(){
+  curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
 
-  curl -sSL https://get.rvm.io | bash -s stable
+  chmod +x ./kubectl
 
-  sudo add-apt-repository -y ppa:pi-rho/dev
+  sudo mv ./kubectl /usr/local/bin/kubectl
+
+  echo "# enable kubectl bash completion" >> ~/.bashrc
+  echo "source <(kubectl completion bash)" >> ~/.bashrc
 }
 
-add_spotify_key_and_repo() {
+install_minikube(){
+  curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && sudo chmod +x minikube
+
+  sudo mkdir -p /usr/local/bin/
+
+  sudo install minikube /usr/local/bin/
+}
+
+install_spotify() {
   sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys \
     0DF731E45CE24F27EEEB1450EFDC8610341D9410
 
   echo deb http://repository.spotify.com stable non-free |
     sudo tee /etc/apt/sources.list.d/spotify.list
+
+  sudo apt-get update && sudo apt-get install spotify-client
 }
 
 install_solarized_theme() {
@@ -72,12 +83,15 @@ install_fzf() {
   ~/.fzf/install
 }
 
-add_rvm_key_and_repo
-add_spotify_key_and_repo
-add_docker_key
-add_docker_repository
-sudo apt-get update
+remap_capslock(){
+  gsettings set org.gnome.desktop.input-sources xkb-options "['caps:ctrl_modifier', 'altwin:meta_alt']"
+}
+
 install_libraries
+# install_spotify
 install_solarized_theme
 install_fzf
-fix_docker_permissions
+install_kubectl
+install_docker
+install_minikube
+# pip3 install grip --user

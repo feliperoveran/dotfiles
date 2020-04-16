@@ -47,3 +47,9 @@ function vimo() {
     env vim -c Obsession "$@"
   fi
 }
+
+# Kubernetes
+alias k="kubectl"
+complete -F __start_kubectl k
+# TODO: more alias and https://github.com/cykerway/complete-alias
+# https://github.com/ahmetb/kubectx/#installation

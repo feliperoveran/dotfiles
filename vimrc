@@ -181,3 +181,15 @@ let g:pymode_python = 'python3'
 let g:pymode_options_max_line_length = 120
 
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
+
+set title titlestring=
+let g:autoswap_detect_tmux = 1
+
+" augroup AutomaticSwapRecoveryAndDelete
+"   autocmd!
+"   autocmd SwapExists * :let v:swapchoice = 'r' | let b:swapname = v:swapname
+"   autocmd VimLeave * :if exists("b:swapname") | call delete(b:swapname) | endif
+" augroup end
+
+" vim-terraform
+let g:terraform_fmt_on_save=1

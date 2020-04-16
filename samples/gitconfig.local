@@ -2,3 +2,7 @@
 [user]
   name = User name
   email = email@user.com
+
+# override global settings by including a different git config
+[includeIf "gitdir:~/work/"]
+    path = ~/work/.gitconfig
