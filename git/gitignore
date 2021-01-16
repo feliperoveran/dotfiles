@@ -57,3 +57,7 @@ __pycache__
 
 # Linux
 .bash_history
+
+# Terraform
+plan.tfplan
+terraform.tfstate

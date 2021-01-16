@@ -23,6 +23,7 @@ alias gpo="git push origin"
 alias gs="git status"
 alias gds="git diff --staged"
 alias grv="git review -R"
+alias grpo="git remote prune origin"
 
 # Enable autocompletion for git aliases
 __git_complete gb _git_branch
@@ -53,3 +54,11 @@ alias k="kubectl"
 complete -F __start_kubectl k
 # TODO: more alias and https://github.com/cykerway/complete-alias
 # https://github.com/ahmetb/kubectx/#installation
+
+function kubectlgetall {
+  for i in $(kubectl api-resources --verbs=list --namespaced -o name | grep -v
+    "events.events.k8s.io" | grep -v "events" | sort | uniq); do
+    echo "Resource:" $i
+    kubectl -n ${1} get --ignore-not-found ${i}
+  done
+}

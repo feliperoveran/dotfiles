@@ -193,3 +193,5 @@ let g:autoswap_detect_tmux = 1
 
 " vim-terraform
 let g:terraform_fmt_on_save=1
+
+let g:VtrClearSequence = "clear\r"
