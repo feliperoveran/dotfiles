@@ -17,21 +17,9 @@ task :install do
   install_prereqs
 
   install_fonts
-
-  install_vim_plugins
-
-  install_tmux_plugins
 end
 
 private
-
-def install_vim_plugins
-  system "vim -N \"+set hidden\" \"+syntax on\" +PlugInstall +qall"
-end
-
-def install_tmux_plugins
-  system '~/.tmux/plugins/tpm/bin/install_plugins'
-end
 
 def install_files(files)
   files.each do |f|

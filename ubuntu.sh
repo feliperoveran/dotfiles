@@ -5,13 +5,12 @@ install_libraries() {
     apt-transport-https \
     ca-certificates \
     curl \
-    git \
-    unity-tweak-tool \
+    wget \
     gnome-tweak-tool \
     silversearcher-ag \
     tmux \
     dconf-cli \
-    vim-gtk3 \
+    vim \
     htop \
     python3-pip \
     xdotool \
@@ -32,9 +31,9 @@ install_docker(){
 
   sudo apt-get update && sudo apt-get install -y docker-ce
 
-  sudo groupadd docker
+  sudo groupadd docker || true
 
-  sudo usermod -aG docker $USER
+  sudo usermod -aG docker $USER || true
 
   # activate the changes to the docker group
   newgrp docker
@@ -56,31 +55,36 @@ install_minikube(){
 
   sudo mkdir -p /usr/local/bin/
 
-  sudo install minikube /usr/local/bin/
-}
-
-install_spotify() {
-  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys \
-    0DF731E45CE24F27EEEB1450EFDC8610341D9410
-
-  echo deb http://repository.spotify.com stable non-free |
-    sudo tee /etc/apt/sources.list.d/spotify.list
-
-  sudo apt-get update && sudo apt-get install spotify-client
+  sudo mv minikube /usr/local/bin/minikube
 }
 
 install_solarized_theme() {
   git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git
-  ./gnome-terminal-colors-solarized/install.sh
 
-  git clone https://github.com/tmux-plugins/tpm ./tmux/plugins/tpm
+  ./gnome-terminal-colors-solarized/install.sh \
+    --install-dircolors \
+    --scheme dark_alternative
 }
 
 # Install fuzzy finder https://github.com/junegunn/fzf
 install_fzf() {
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 
-  ~/.fzf/install
+  ~/.fzf/install --all
+}
+
+install_vim_plugins() {
+  # install vim plug
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+  vim -N "+set hidden" "+syntax on" +PlugInstall +qall
+}
+
+install_tmux_plugins(){
+  git clone https://github.com/tmux-plugins/tpm ./tmux/plugins/tpm
+
+  ~/.tmux/plugins/tpm/bin/install_plugins
 }
 
 remap_capslock(){
@@ -88,10 +92,11 @@ remap_capslock(){
 }
 
 install_libraries
-# install_spotify
 install_solarized_theme
+install_tmux_plugins
+install_vim_plugins
 install_fzf
-install_kubectl
-install_docker
-install_minikube
-# pip3 install grip --user
+# install_kubectl
+# install_docker
+# install_minikube
+pip3 install grip --user

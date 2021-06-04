@@ -1,0 +1,14 @@
+#!/bin/bash
+
+case $1 in
+  build)
+    docker build -t dotfiles .
+    ;;
+  run)
+    docker run --rm -it --name dotfiles -v $(pwd):/dotfiles dotfiles:latest bash -c "cd /dotfiles; rake install"
+    ;;
+  *)
+    echo "Wtf?"
+    exit 1
+    ;;
+esac
