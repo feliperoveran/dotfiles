@@ -1,0 +1,1 @@
+/home/lizux/.dotfiles/tmux

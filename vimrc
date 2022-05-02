@@ -198,3 +198,18 @@ let g:autoswap_detect_tmux = 1
 let g:terraform_fmt_on_save=1
 
 let g:VtrClearSequence = "clear\r"
+
+let g:pymode_rope = 0
+let g:pymode_rope_completion = 0
+let g:pymode_rope_completion_bind = "<C-Space>"
+let g:jedi#popup_on_dot = 0
+let g:jedi#use_splits_not_buffers = "bottom"
+
+" WSL yank support
+let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
+if executable(s:clip)
+  augroup WSLYank
+    autocmd!
+    autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+  augroup END
+endif
