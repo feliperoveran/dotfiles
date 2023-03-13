@@ -180,9 +180,6 @@ let vim_markdown_preview_github=1
 let vim_markdown_preview_hotkey='<C-o>'
 let vim_markdown_preview_toggle=1
 
-let g:pymode_python = 'python3'
-let g:pymode_options_max_line_length = 120
-
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 
 set title titlestring=
@@ -199,9 +196,12 @@ let g:terraform_fmt_on_save=1
 
 let g:VtrClearSequence = "clear\r"
 
+" pymode
 let g:pymode_rope = 0
 let g:pymode_rope_completion = 0
 let g:pymode_rope_completion_bind = "<C-Space>"
+let g:pymode_python = 'python3'
+let g:pymode_options_max_line_length = 120
 let g:jedi#popup_on_dot = 0
 let g:jedi#use_splits_not_buffers = "bottom"
 
@@ -213,3 +213,30 @@ if executable(s:clip)
     autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
   augroup END
 endif
+
+" vim-go
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_operators = 1
+
+let g:go_fmt_autosave = 1
+let g:go_fmt_command = "goimports"
+
+let g:go_auto_type_info = 1
+
+" Run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+" Map go functions. Ex: `\b` for building, `\r` for running and `\b` for running test.
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+autocmd FileType go nmap <leader>t  <Plug>(go-test)
