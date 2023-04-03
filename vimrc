@@ -236,7 +236,11 @@ function! s:build_go_files()
   endif
 endfunction
 
-" Map go functions. Ex: `\b` for building, `\r` for running and `\b` for running test.
+" Map go functions. Ex: `\b` for building, `\r` for running and `\t` for running test.
 autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+" autocmd FileType go nmap <leader>b :call VtrSendCommand('go build ' . expand("%"))<CR>
+
 autocmd FileType go nmap <leader>r  <Plug>(go-run)
+" autocmd FileType go nmap <leader>r :call VtrSendCommand('go run ' . expand("%"))<CR>
+
 autocmd FileType go nmap <leader>t  <Plug>(go-test)

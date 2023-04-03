@@ -18,6 +18,7 @@ install_libraries() {
     exuberant-ctags \
     meld \
     pwgen \
+    keychain \
     jq
 }
 

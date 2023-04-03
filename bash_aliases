@@ -48,6 +48,19 @@ function vimo() {
   fi
 }
 
+function nvimo() {
+  if ! command -v nvim; then
+    echo "nvim could not be found!"
+    return
+  fi
+
+  if test -f Session.vim; then
+    env nvim -S
+  else
+    env nvim -c Obsession "$@"
+  fi
+}
+
 # Kubernetes
 alias k="kubectl"
 complete -F __start_kubectl k
@@ -61,3 +74,9 @@ function kubectlgetall {
     kubectl -n ${1} get --ignore-not-found ${i}
   done
 }
+
+function kubectl_clean_terminated {
+  kubectl get pods --all-namespaces | grep Terminated | awk '{print $1,$2}' | xargs -n2 bash -c 'kubectl delete pod -n $0 $1'
+}
+
+eval $(keychain --eval 2>/dev/null)
