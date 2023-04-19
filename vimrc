@@ -214,6 +214,13 @@ if executable(s:clip)
   augroup END
 endif
 
+" Deoplete for automatic autocomplete
+let g:deoplete#enable_at_startup = 1
+
+call deoplete#custom#option('omni_patterns', {
+\ 'go': '[^. *\t]\.\w*',
+\})
+
 " vim-go
 let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
@@ -244,3 +251,11 @@ autocmd FileType go nmap <leader>r  <Plug>(go-run)
 " autocmd FileType go nmap <leader>r :call VtrSendCommand('go run ' . expand("%"))<CR>
 
 autocmd FileType go nmap <leader>t  <Plug>(go-test)
+
+" Alternate between file and tests, opening on a vertical split
+au FileType go nmap <Leader>av <Plug>(go-alternate-vertical)
+
+" Go to definition - horizontal
+au FileType go nmap <Leader>gds <Plug>(go-def-split)
+" Go to definition - vertical
+au FileType go nmap <Leader>gdv <Plug>(go-def-vertical)

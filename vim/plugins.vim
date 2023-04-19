@@ -31,14 +31,15 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-obsession'
 Plug 'posva/vim-vue'
 Plug 'elixir-editors/vim-elixir'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'vim-scripts/tabmerge'
 Plug 'jparise/vim-graphql'
 Plug 'python-mode/python-mode', { 'branch': 'develop' }
 Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'hashivim/vim-terraform'
 Plug 'gioele/vim-autoswap'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jodosha/vim-godebug'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 if filereadable(expand("~/.plugins.vim.local"))
   source ~/.plugins.vim.local
