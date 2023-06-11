@@ -259,3 +259,8 @@ au FileType go nmap <Leader>av <Plug>(go-alternate-vertical)
 au FileType go nmap <Leader>gds <Plug>(go-def-split)
 " Go to definition - vertical
 au FileType go nmap <Leader>gdv <Plug>(go-def-vertical)
+
+" PHP
+let g:vdebug_options = {
+      \  "port": 9001,
+      \}

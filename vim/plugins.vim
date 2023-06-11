@@ -40,6 +40,7 @@ Plug 'gioele/vim-autoswap'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jodosha/vim-godebug'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'vim-vdebug/vdebug'
 
 if filereadable(expand("~/.plugins.vim.local"))
   source ~/.plugins.vim.local
