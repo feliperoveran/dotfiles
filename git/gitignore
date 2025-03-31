@@ -37,6 +37,7 @@ cscope.po.out
 [._]s[a-w][a-z]
 *.un~
 Session.vim
+*.vim
 .netrwhist
 *~
 vim-markdown-preview.html
@@ -61,3 +62,7 @@ __pycache__
 # Terraform
 plan.tfplan
 terraform.tfstate
+.terraform.lock.hcl
+
+# coverage files
+cover.out

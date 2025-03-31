@@ -4,7 +4,6 @@ desc 'Install dotfiles'
 task :install do
   install_files(Dir.glob([
     "tmux.conf",
-    "tmux",
     "vimrc",
     "vim",
     "bash_aliases",

@@ -6,7 +6,6 @@ call plug#begin('~/.vim/bundle')
 
 " Define bundles via Github repos
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'skwp/vim-colors-solarized'
 Plug 'feliperoveran/nerdtree', { 'branch': 'master' } " file explorer
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy finder
 Plug 'pbrisbin/vim-mkdir' " create folder if it doesn't exist
@@ -41,6 +40,10 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jodosha/vim-godebug'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'vim-vdebug/vdebug'
+Plug 'lifepillar/vim-solarized8'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 
 if filereadable(expand("~/.plugins.vim.local"))
   source ~/.plugins.vim.local

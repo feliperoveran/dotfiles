@@ -153,7 +153,8 @@ set directory^=$HOME/.dotfiles/vim/swap//
 let g:solarized_termtrans=1
 syntax enable
 set background=dark
-colorscheme solarized
+set termguicolors
+autocmd vimenter * ++nested colorscheme solarized8_flat
 
 " This gets the current directory name, not the fullpath, needed to see if the
 " ./script/<dirname> exists so it can be called when running specs
@@ -227,11 +228,13 @@ let g:go_highlight_functions = 1
 let g:go_highlight_function_calls = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_operators = 1
-
 let g:go_fmt_autosave = 1
 let g:go_fmt_command = "goimports"
-
 let g:go_auto_type_info = 1
+" Add Go build tags so that the LSP can load package metadata
+" Get tags using list_go_build_tags (.bash_alias)
+" TODO: automate async with nvim
+let g:go_build_tags = "dr engineer_commit_tag infra integration paasimmutable paasmutable promotion tools unit"
 
 " Run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
