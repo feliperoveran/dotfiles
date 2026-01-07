@@ -126,3 +126,7 @@
   path = ~/.gitconfig.local
 [pull]
 	rebase = true
+[credential "https://source.developers.google.com"]
+	helper = gcloud.sh
+[init]
+	defaultBranch = main

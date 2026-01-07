@@ -18,7 +18,9 @@ install_libraries() {
     exuberant-ctags \
     meld \
     pwgen \
-    jq
+    keychain \
+    jq \
+    jo
 }
 
 install_docker(){
@@ -99,4 +101,4 @@ install_fzf
 # install_kubectl
 # install_docker
 # install_minikube
-pip3 install grip --user
+pip3 install pynvim grip --user

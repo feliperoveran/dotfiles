@@ -1,1 +1,1 @@
-/home/lizux/.dotfiles/tmux
+/home/feliperoveran/.dotfiles/tmux

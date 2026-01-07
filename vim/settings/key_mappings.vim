@@ -115,5 +115,8 @@ nnoremap <silent> <C-\> :LocalCloseNerdTree<cr>
 " Index ctags from any project, including those outside Rails
 map <Leader>ct :!ctags -R .<CR>
 
-"grep the current word using K (mnemonic Kurrent)
-nnoremap <silent> K :Ag <cword><CR>
+" Go to definition, etc etc
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>

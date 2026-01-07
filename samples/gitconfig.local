@@ -3,6 +3,10 @@
   name = User name
   email = email@user.com
 
+# to use a different ssh key
+# [core]
+#   sshCommand = ssh -i <path-to-key>
+
 # override global settings by including a different git config
 [includeIf "gitdir:~/work/"]
     path = ~/work/.gitconfig

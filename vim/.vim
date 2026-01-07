@@ -1,1 +1,1 @@
-/home/lizux/.dotfiles/vim
+/home/feliperoveran/.dotfiles/vim

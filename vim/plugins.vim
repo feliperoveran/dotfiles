@@ -10,12 +10,11 @@ Plug 'skwp/vim-colors-solarized'
 Plug 'feliperoveran/nerdtree', { 'branch': 'master' } " file explorer
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy finder
 Plug 'pbrisbin/vim-mkdir' " create folder if it doesn't exist
-Plug 'scrooloose/syntastic' " syntax checking
+" Plug 'scrooloose/syntastic' " syntax checking
 Plug 'thoughtbot/vim-rspec'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-rails'
-Plug 'keith/rspec.vim'
 Plug 'tpope/vim-surround'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/tComment'
@@ -31,14 +30,23 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-obsession'
 Plug 'posva/vim-vue'
 Plug 'elixir-editors/vim-elixir'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'vim-scripts/tabmerge'
 Plug 'jparise/vim-graphql'
-Plug 'python-mode/python-mode', { 'branch': 'develop' }
+" Plug 'python-mode/python-mode', { 'branch': 'develop' }
 Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'hashivim/vim-terraform'
 Plug 'gioele/vim-autoswap'
-Plug 'jodosha/vim-godebug'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
+
+" LSP
+Plug 'williamboman/mason.nvim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/mason-lspconfig.nvim'
+
+" Autocompletion plugins
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
 
 if filereadable(expand("~/.plugins.vim.local"))
   source ~/.plugins.vim.local
