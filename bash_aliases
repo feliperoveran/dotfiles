@@ -144,7 +144,7 @@ else
 
   setopt prompt_subst
   prompt_host='$(scutil --get LocalHostName 2>/dev/null || hostname -s)'
-  PROMPT="%n@${prompt_host}:%~%F{cyan}\$(parse_git_branch)%f $ "
+  PROMPT="%n@${prompt_host}:%F{green}%~%f%F{cyan}\$(parse_git_branch)%f $ "
 fi
 
 if ! is_zsh; then
