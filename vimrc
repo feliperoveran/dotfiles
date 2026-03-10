@@ -151,9 +151,9 @@ set directory^=$HOME/.dotfiles/vim/swap//
 " endif
 
 let g:solarized_termtrans=1
+let g:solarized_termcolors=256
+set termguicolors
 syntax enable
-set background=dark
-colorscheme solarized
 
 " This gets the current directory name, not the fullpath, needed to see if the
 " ./script/<dirname> exists so it can be called when running specs

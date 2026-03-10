@@ -33,10 +33,9 @@ Plug 'elixir-editors/vim-elixir'
 Plug 'vim-scripts/tabmerge'
 Plug 'jparise/vim-graphql'
 " Plug 'python-mode/python-mode', { 'branch': 'develop' }
-Plug 'JamshedVesuna/vim-markdown-preview'
+" Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'hashivim/vim-terraform'
 Plug 'gioele/vim-autoswap'
-Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
 
 " LSP
 Plug 'williamboman/mason.nvim'

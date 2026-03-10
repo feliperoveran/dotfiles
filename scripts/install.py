@@ -6,6 +6,7 @@ import os
 import platform
 import shutil
 import subprocess
+import time
 from pathlib import Path
 
 
@@ -52,7 +53,7 @@ def install_dotfiles() -> None:
 def ensure_shell_sources() -> None:
     bash_aliases = HOME / ".bash_aliases"
     if bash_aliases.exists():
-        def ensure_source(rc: Path, line: str) -> None:
+        def ensure_line(rc: Path, line: str) -> None:
             if rc.exists():
                 content = rc.read_text(encoding="utf-8", errors="ignore")
                 if line in content:
@@ -61,8 +62,12 @@ def ensure_shell_sources() -> None:
             else:
                 rc.write_text(line + "\n", encoding="utf-8")
 
-        ensure_source(HOME / ".bashrc", "source ~/.bash_aliases")
-        ensure_source(HOME / ".zshrc", "source ~/.bash_aliases")
+        ensure_line(HOME / ".bashrc", "source ~/.bash_aliases")
+        ensure_line(HOME / ".zshrc", "source ~/.bash_aliases")
+
+        # Ensure pipx-installed binaries are reachable.
+        ensure_line(HOME / ".bashrc", 'export PATH="$HOME/.local/bin:$PATH"')
+        ensure_line(HOME / ".zshrc", 'export PATH="$HOME/.local/bin:$PATH"')
 
 
 def install_binaries() -> None:
@@ -171,6 +176,9 @@ def install_fzf(platform_id: str) -> None:
     if shutil.which("fzf") is None:
         run(["git", "clone", "--depth", "1", "https://github.com/junegunn/fzf.git", str(HOME / ".fzf")])
         run([str(HOME / ".fzf" / "install"), "--all"])
+    else:
+        if (HOME / ".fzf").exists():
+            run([str(HOME / ".fzf" / "install"), "--all"], check=False)
 
 
 def install_vim_plug() -> None:
@@ -254,45 +262,43 @@ def install_fonts(platform_id: str) -> None:
 
 
 def install_python_tools() -> None:
-    if shutil.which("pip3"):
+    if shutil.which("pip3") is None:
+        return
+
+    if platform.system().lower() == "darwin":
+        venv_dir = HOME / ".venvs" / "pynvim"
+        if not venv_dir.exists():
+            run(["python3", "-m", "venv", str(venv_dir)])
+        run([str(venv_dir / "bin" / "python"), "-m", "pip", "install", "--upgrade", "pip"])
+        run([str(venv_dir / "bin" / "python"), "-m", "pip", "install", "pynvim"])
+
+        if shutil.which("pipx"):
+            run(["pipx", "install", "grip"], check=False)
+            run(["pipx", "ensurepath"], check=False)
+        elif shutil.which("brew"):
+            run(["brew", "install", "pipx"])
+            run(["pipx", "install", "grip"], check=False)
+            run(["pipx", "ensurepath"], check=False)
+    else:
         run(["pip3", "install", "--user", "pynvim", "grip"])
 
 
-def install_terminal_profile_macos() -> None:
-    script = (
-        'tell application "Terminal"\n'
-        "activate\n"
-        "if not (exists settings set \"Solarized Dark\") then\n"
-        "set solarized to make new settings set with properties {name:\"Solarized Dark\"}\n"
-        "else\n"
-        "set solarized to settings set \"Solarized Dark\"\n"
-        "end if\n"
-        "set background color of solarized to {0, 11051, 13878}\n"
-        "set normal text color of solarized to {33667, 38036, 38550}\n"
-        "set cursor color of solarized to {37779, 41377, 41377}\n"
-        "set selection color of solarized to {1799, 13878, 16962}\n"
-        "set selected text color of solarized to {61166, 59624, 54741}\n"
-        "set ANSI black color of solarized to {1799, 13878, 16962}\n"
-        "set ANSI red color of solarized to {56540, 12850, 12079}\n"
-        "set ANSI green color of solarized to {34181, 39321, 0}\n"
-        "set ANSI yellow color of solarized to {46517, 35209, 0}\n"
-        "set ANSI blue color of solarized to {9766, 35723, 53970}\n"
-        "set ANSI magenta color of solarized to {54227, 13878, 33410}\n"
-        "set ANSI cyan color of solarized to {10794, 41377, 39064}\n"
-        "set ANSI white color of solarized to {61166, 59624, 54741}\n"
-        "set ANSI bright black color of solarized to {0, 11051, 13878}\n"
-        "set ANSI bright red color of solarized to {52171, 19275, 5654}\n"
-        "set ANSI bright green color of solarized to {22616, 28270, 30069}\n"
-        "set ANSI bright yellow color of solarized to {25957, 31611, 33667}\n"
-        "set ANSI bright blue color of solarized to {33667, 38036, 38550}\n"
-        "set ANSI bright magenta color of solarized to {27756, 29041, 50372}\n"
-        "set ANSI bright cyan color of solarized to {37779, 41377, 41377}\n"
-        "set ANSI bright white color of solarized to {65021, 63222, 58339}\n"
-        "set default settings to solarized\n"
-        "set startup settings to solarized\n"
-        "end tell\n"
+def install_iterm2_macos() -> None:
+    if shutil.which("brew") is None:
+        return
+    run(["brew", "install", "--cask", "iterm2"])
+
+    profile_url = (
+        "https://raw.githubusercontent.com/altercation/solarized/master/"
+        "iterm2-colors-solarized/Solarized%20Dark.itermcolors"
     )
-    run(["osascript", "-e", script], check=False)
+    profile_path = Path("/tmp/solarized-dark.itermcolors")
+    run(["curl", "-fsSL", profile_url, "-o", str(profile_path)])
+    run(["open", str(profile_path)])
+    time.sleep(1)
+    print("iTerm2: imported Solarized Dark color preset.")
+    print("Open iTerm2 > Settings > Profiles > Colors > Color Presets to select it.")
+    print("To make iTerm2 default terminal: iTerm2 menu > Make iTerm2 Default Term.")
 
 
 def main() -> None:
@@ -321,7 +327,7 @@ def main() -> None:
         install_fonts(platform_id)
     install_python_tools()
     if platform_id == "macos":
-        install_terminal_profile_macos()
+        install_iterm2_macos()
 
 
 if __name__ == "__main__":

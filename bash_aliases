@@ -1,19 +1,28 @@
 # enable vi keys for bash
 set -o vi
 
+is_zsh() { [ -n "${ZSH_VERSION:-}" ]; }
+
 # Source git completion functions (Linux + macOS)
-if [ -f /usr/share/bash-completion/completions/git ]; then
-  # Debian/Ubuntu
-  # shellcheck disable=SC1091
-  source /usr/share/bash-completion/completions/git
-elif [ -f /opt/homebrew/etc/bash_completion.d/git-completion.bash ]; then
-  # macOS (Apple Silicon)
-  # shellcheck disable=SC1091
-  source /opt/homebrew/etc/bash_completion.d/git-completion.bash
-elif [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
-  # macOS (Intel)
-  # shellcheck disable=SC1091
-  source /usr/local/etc/bash_completion.d/git-completion.bash
+if ! is_zsh; then
+  if [ -f /usr/share/bash-completion/completions/git ]; then
+    # Debian/Ubuntu
+    # shellcheck disable=SC1091
+    source /usr/share/bash-completion/completions/git
+  elif [ -f /opt/homebrew/etc/bash_completion.d/git-completion.bash ]; then
+    # macOS (Apple Silicon)
+    # shellcheck disable=SC1091
+    source /opt/homebrew/etc/bash_completion.d/git-completion.bash
+  elif [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
+    # macOS (Intel)
+    # shellcheck disable=SC1091
+    source /usr/local/etc/bash_completion.d/git-completion.bash
+  fi
+else
+  if [ -f /opt/homebrew/share/zsh/site-functions/_git ] || [ -f /usr/local/share/zsh/site-functions/_git ]; then
+    autoload -Uz compinit
+    compinit
+  fi
 fi
 
 # Remap keys
@@ -111,22 +120,50 @@ gwt_rm() {
   echo "✅ removed worktree: $target"
 }
 
-# Enable autocompletion for git aliases when available
-if type __git_complete >/dev/null 2>&1; then
-  __git_complete gb _git_branch
-  __git_complete gpo _git_branch
-  __git_complete gp _git_branch
-  __git_complete gco _git_checkout
+if ! is_zsh; then
+  # Enable autocompletion for git aliases when available
+  if type __git_complete >/dev/null 2>&1; then
+    __git_complete gb _git_branch
+    __git_complete gpo _git_branch
+    __git_complete gp _git_branch
+    __git_complete gco _git_checkout
+  fi
+
+  # show branch name on PS1
+  parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+  }
+
+  export PS1="${debian_chroot:+($debian_chroot)}\u@\h\[\033[00m\]:\[\033[32m\]\w\[\033[36m\]\$(parse_git_branch)\[\033[00m\]$ "
+else
+  parse_git_branch() {
+    local branch
+    branch=$(git symbolic-ref --short HEAD 2>/dev/null) || return
+    echo " (${branch})"
+  }
+
+  setopt prompt_subst
+  prompt_host='$(scutil --get LocalHostName 2>/dev/null || hostname -s)'
+  PROMPT="%n@${prompt_host}:%~%F{cyan}\$(parse_git_branch)%f $ "
 fi
 
-# show branch name on PS1
-parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-}
-
-export PS1="${debian_chroot:+($debian_chroot)}\u@\h\[\033[00m\]:\[\033[32m\]\w\[\033[36m\]\$(parse_git_branch)\[\033[00m\]$ "
-
-[ -f ~/.fzf.bash  ] && source ~/.fzf.bash
+if ! is_zsh; then
+  # FZF via git clone installer
+  [ -f ~/.fzf.bash  ] && source ~/.fzf.bash
+  # FZF via Homebrew
+  [ -f /opt/homebrew/opt/fzf/shell/key-bindings.bash ] && source /opt/homebrew/opt/fzf/shell/key-bindings.bash
+  [ -f /opt/homebrew/opt/fzf/shell/completion.bash ] && source /opt/homebrew/opt/fzf/shell/completion.bash
+  [ -f /usr/local/opt/fzf/shell/key-bindings.bash ] && source /usr/local/opt/fzf/shell/key-bindings.bash
+  [ -f /usr/local/opt/fzf/shell/completion.bash ] && source /usr/local/opt/fzf/shell/completion.bash
+else
+  # FZF via git clone installer
+  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+  # FZF via Homebrew
+  [ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ] && source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+  [ -f /opt/homebrew/opt/fzf/shell/completion.zsh ] && source /opt/homebrew/opt/fzf/shell/completion.zsh
+  [ -f /usr/local/opt/fzf/shell/key-bindings.zsh ] && source /usr/local/opt/fzf/shell/key-bindings.zsh
+  [ -f /usr/local/opt/fzf/shell/completion.zsh ] && source /usr/local/opt/fzf/shell/completion.zsh
+fi
 
 function vimo() {
   if test -f Session.vim; then
@@ -151,7 +188,9 @@ function nvimo() {
 
 # Kubernetes
 alias k="kubectl"
-complete -F __start_kubectl k
+if ! is_zsh; then
+  complete -F __start_kubectl k
+fi
 # TODO: more alias and https://github.com/cykerway/complete-alias
 # https://github.com/ahmetb/kubectx/#installation
 

@@ -12,7 +12,7 @@ end
 local ok_mason_lsp, mason_lspconfig = pcall(require, "mason-lspconfig")
 if ok_mason_lsp then
   mason_lspconfig.setup({
-    ensure_installed = { "gopls", "ts_ls", "ruby_lsp", "pyright" },
+    ensure_installed = { "gopls", "tsserver", "ruby_lsp", "pyright", "omnisharp" },
   })
 end
 
@@ -32,7 +32,7 @@ lspconfig.gopls.setup({
   end,
 })
 
-lspconfig.ts_ls.setup({
+lspconfig.tsserver.setup({
   capabilities = capabilities,
   root_dir = function(bufnr)
     return root_dir(bufnr, { "package.json", "tsconfig.json", "jsconfig.json", ".git" })
@@ -63,13 +63,39 @@ lspconfig.pyright.setup({
   end,
 })
 
+lspconfig.omnisharp.setup({
+  capabilities = capabilities,
+  cmd = {
+    vim.fn.stdpath("data") .. "/mason/bin/omnisharp",
+    "--languageserver",
+    "--hostPID",
+    tostring(vim.fn.getpid()),
+  },
+  root_dir = function(bufnr)
+    return root_dir(bufnr, { "*.sln", "*.csproj", ".git" })
+  end,
+})
+
+-- Only these filetypes are auto-formatted on save via LSP.
+local format_on_save_filetypes = {
+  go = true,
+  javascript = true,
+  javascriptreact = true,
+  typescript = true,
+  typescriptreact = true,
+  json = true,
+  jsonc = true,
+  ruby = true,
+  python = true,
+}
+
 -- Format on save when the attached LSP supports it.
 local format_group = vim.api.nvim_create_augroup("LspFormatOnSave", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = format_group,
   callback = function()
     local ft = vim.bo.filetype
-    if ft == "typescript" or ft == "typescriptreact" or ft == "javascript" or ft == "javascriptreact" then
+    if not format_on_save_filetypes[ft] then
       return
     end
 

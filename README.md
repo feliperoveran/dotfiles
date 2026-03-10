@@ -10,4 +10,4 @@ What this does:
 - Symlinks dotfiles into your home directory.
 - Installs packages for macOS or Ubuntu.
 - Installs tmux/vim plugins, fonts, and Python tools.
-- On macOS, creates a "Solarized Dark" Terminal profile and sets it as default.
+- On macOS, installs iTerm2 and imports the Solarized Dark color preset.
