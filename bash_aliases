@@ -1,11 +1,23 @@
 # enable vi keys for bash
 set -o vi
 
-# Source git completion functions
-source /usr/share/bash-completion/completions/git
+# Source git completion functions (Linux + macOS)
+if [ -f /usr/share/bash-completion/completions/git ]; then
+  # Debian/Ubuntu
+  # shellcheck disable=SC1091
+  source /usr/share/bash-completion/completions/git
+elif [ -f /opt/homebrew/etc/bash_completion.d/git-completion.bash ]; then
+  # macOS (Apple Silicon)
+  # shellcheck disable=SC1091
+  source /opt/homebrew/etc/bash_completion.d/git-completion.bash
+elif [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
+  # macOS (Intel)
+  # shellcheck disable=SC1091
+  source /usr/local/etc/bash_completion.d/git-completion.bash
+fi
 
 # Remap keys
-xmodmap -e "keycode 47 = colon semicolon" || true
+command -v xmodmap >/dev/null 2>&1 && xmodmap -e "keycode 47 = colon semicolon" || true
 
 # git aliases
 alias g="git"
@@ -99,11 +111,13 @@ gwt_rm() {
   echo "✅ removed worktree: $target"
 }
 
-# Enable autocompletion for git aliases
-__git_complete gb _git_branch
-__git_complete gpo _git_branch
-__git_complete gp _git_branch
-__git_complete gco _git_checkout
+# Enable autocompletion for git aliases when available
+if type __git_complete >/dev/null 2>&1; then
+  __git_complete gb _git_branch
+  __git_complete gpo _git_branch
+  __git_complete gp _git_branch
+  __git_complete gco _git_checkout
+fi
 
 # show branch name on PS1
 parse_git_branch() {
