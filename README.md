@@ -11,3 +11,9 @@ What this does:
 - Installs packages for macOS or Ubuntu.
 - Installs tmux/vim plugins, fonts, and Python tools.
 - On macOS, installs iTerm2 and imports the Solarized Dark color preset.
+
+**LSP Servers**
+LSP setup lives in `vim/settings/lsp.lua`.
+- Filetype → server mapping is in `ft_to_server`.
+- To add a new one: add the filetype + server there and add a matching `configure("server", {...})` block in the same file.
+- If a server is missing, you’ll get a warning when you open a file of that type.
