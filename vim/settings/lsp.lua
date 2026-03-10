@@ -12,27 +12,28 @@ end
 local ok_mason_lsp, mason_lspconfig = pcall(require, "mason-lspconfig")
 if ok_mason_lsp then
   mason_lspconfig.setup({
-    ensure_installed = { "gopls", "tsserver", "ruby_lsp", "pyright", "omnisharp" },
+    ensure_installed = { "gopls", "ts_ls", "ruby_lsp", "pyright", "omnisharp" },
   })
 end
 
-local ok_lspconfig, lspconfig = pcall(require, "lspconfig")
-if not ok_lspconfig then
-  return
+-- Neovim 0.11+ native LSP config
+local function configure(server, config)
+  vim.lsp.config(server, config)
+  vim.lsp.enable(server)
 end
 
 local function root_dir(bufnr, patterns)
   return vim.fs.root(bufnr, patterns) or vim.fn.getcwd()
 end
 
-lspconfig.gopls.setup({
+configure("gopls", {
   capabilities = capabilities,
   root_dir = function(bufnr)
     return root_dir(bufnr, { "go.work", "go.mod", ".git" })
   end,
 })
 
-lspconfig.tsserver.setup({
+configure("ts_ls", {
   capabilities = capabilities,
   root_dir = function(bufnr)
     return root_dir(bufnr, { "package.json", "tsconfig.json", "jsconfig.json", ".git" })
@@ -48,7 +49,7 @@ local function ruby_lsp_cmd(bufnr)
   return { "ruby-lsp" }
 end
 
-lspconfig.ruby_lsp.setup({
+configure("ruby_lsp", {
   capabilities = capabilities,
   cmd = ruby_lsp_cmd,
   root_dir = function(bufnr)
@@ -56,14 +57,14 @@ lspconfig.ruby_lsp.setup({
   end,
 })
 
-lspconfig.pyright.setup({
+configure("pyright", {
   capabilities = capabilities,
   root_dir = function(bufnr)
     return root_dir(bufnr, { "pyproject.toml", "setup.py", "requirements.txt", ".git" })
   end,
 })
 
-lspconfig.omnisharp.setup({
+configure("omnisharp", {
   capabilities = capabilities,
   cmd = {
     vim.fn.stdpath("data") .. "/mason/bin/omnisharp",
