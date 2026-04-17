@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import platform
 import shutil
@@ -68,6 +69,34 @@ def ensure_shell_sources() -> None:
         # Ensure pipx-installed binaries are reachable.
         ensure_line(HOME / ".bashrc", 'export PATH="$HOME/.local/bin:$PATH"')
         ensure_line(HOME / ".zshrc", 'export PATH="$HOME/.local/bin:$PATH"')
+
+
+def install_claude() -> None:
+    claude_src = ROOT_DIR / "claude"
+    if not claude_src.exists():
+        return
+    statusline = claude_src / "statusline-command.sh"
+    if not statusline.exists():
+        return
+
+    claude_dir = HOME / ".claude"
+    claude_dir.mkdir(parents=True, exist_ok=True)
+    link_path(statusline, claude_dir / "statusline-command.sh")
+
+    settings_path = claude_dir / "settings.json"
+    settings: dict = {}
+    if settings_path.exists():
+        try:
+            settings = json.loads(settings_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            print(f"warning: {settings_path} is not valid JSON, skipping statusLine merge")
+            return
+
+    settings["statusLine"] = {
+        "type": "command",
+        "command": "bash ~/.claude/statusline-command.sh",
+    }
+    settings_path.write_text(json.dumps(settings, indent=2) + "\n", encoding="utf-8")
 
 
 def install_binaries() -> None:
@@ -305,7 +334,12 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--platform", default="auto", choices=["auto", "ubuntu", "macos", "linux"])
     parser.add_argument("--skip-fonts", action="store_true")
+    parser.add_argument("--claude-only", action="store_true", help="Only install Claude Code statusline + settings")
     args = parser.parse_args()
+
+    if args.claude_only:
+        install_claude()
+        return
 
     platform_id = detect_platform(args.platform)
     if platform_id not in {"ubuntu", "macos"}:
@@ -313,6 +347,7 @@ def main() -> None:
 
     install_dotfiles()
     ensure_shell_sources()
+    install_claude()
     install_binaries()
 
     if platform_id == "ubuntu":
