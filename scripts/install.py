@@ -71,6 +71,32 @@ def ensure_shell_sources() -> None:
         ensure_line(HOME / ".zshrc", 'export PATH="$HOME/.local/bin:$PATH"')
 
 
+def _ensure_notification_hook(settings: dict, command: str) -> None:
+    """Merge a Claude Notification hook entry without duplicating existing ones."""
+    hooks = settings.setdefault("hooks", {})
+    if not isinstance(hooks, dict):
+        print("warning: settings.hooks is not an object, skipping Notification merge")
+        return
+    notification = hooks.setdefault("Notification", [])
+    if not isinstance(notification, list):
+        print("warning: settings.hooks.Notification is not a list, skipping merge")
+        return
+
+    for matcher in notification:
+        if not isinstance(matcher, dict):
+            continue
+        inner = matcher.get("hooks")
+        if not isinstance(inner, list):
+            continue
+        for entry in inner:
+            if isinstance(entry, dict) and entry.get("command") == command:
+                return
+
+    notification.append(
+        {"hooks": [{"type": "command", "command": command}]}
+    )
+
+
 def install_claude() -> None:
     claude_src = ROOT_DIR / "claude"
     if not claude_src.exists():
@@ -82,6 +108,17 @@ def install_claude() -> None:
     claude_dir = HOME / ".claude"
     claude_dir.mkdir(parents=True, exist_ok=True)
     link_path(statusline, claude_dir / "statusline-command.sh")
+
+    hooks_src = claude_src / "hooks"
+    installed_hooks: list[str] = []
+    if hooks_src.is_dir():
+        hooks_dir = claude_dir / "hooks"
+        hooks_dir.mkdir(parents=True, exist_ok=True)
+        for entry in sorted(hooks_src.iterdir()):
+            if entry.is_file() and entry.suffix == ".sh":
+                entry.chmod(entry.stat().st_mode | 0o111)
+                link_path(entry, hooks_dir / entry.name)
+                installed_hooks.append(entry.name)
 
     settings_path = claude_dir / "settings.json"
     settings: dict = {}
@@ -96,6 +133,10 @@ def install_claude() -> None:
         "type": "command",
         "command": "bash ~/.claude/statusline-command.sh",
     }
+
+    if "tmux-bell.sh" in installed_hooks:
+        _ensure_notification_hook(settings, "~/.claude/hooks/tmux-bell.sh")
+
     settings_path.write_text(json.dumps(settings, indent=2) + "\n", encoding="utf-8")
 
 
